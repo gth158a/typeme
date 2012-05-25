@@ -1,0 +1,95 @@
+Aquest projecte consisteix en una senzilla utilitat per a aprendre mecanografia a un teclat d'ordinador.
+
+Està especialment orientat a teclats qwerty amb les variants espanyola o catalana.
+
+Pots fer el que vulguis amb els continguts d'aquest projecte sota els
+terminis de la GNU General Public License tal i com està publicada
+per la Free Software Foundation, tan a la versió 3 com de posteriors.
+
+Objectius
+=========
+
+El programa pretén oferir un entorn d'entrenament simple per millorar la precisió en l'escriptura mecanogràfica d'un ampli abast de tecles d'un teclat qwerty amb variat espanyola o catalana. 
+
+El programa **no** està pensat per a millorar la velocitat de tecleig.
+
+Per altra banda, el programa pretén no ser excessivament pesat obligant a realitzar indefinidament una frase d'assaig per a poder passar a la següent.
+
+Això es veu reflectit en diferents decisions de disseny:
+
+* només indica el temps de pulsacions si s'encerta el 100% de la frase d'assaig.
+
+* cal escriure cada frase un mínim de 2 cops amb 100% de precisió per que e el programa consideri que la frase està superada.
+
+* en cas que en escriure una frase s'obtingui una precisió per sota del 95%, el programa incrementa el nombre de cops que caldrà superar la frase (fins un màxim de 10)
+
+* en cas que s'aconsegueixi el 100% dos cops seguits amb una frase, independentment de si encara queden més repeticions pendents, es passa a la següent.
+* té inhabilitada la tecla <Del> o <Backspace>.
+
+* distingeix amb colors els encerts i els errors.
+
+
+Funcionament
+============
+
+**Important**: el programa NOMÉS ha estat provat sobre sistemes GNU/Linux. En concret, sobre vàries distribucions basades en Debian.
+
+El programa requereix inicialment dos fitxers:
+
+* typeme.py: el programa en si. Es tracta d'un script en python.
+
+* sequencies.txt: el fitxer amb les seqüències de pràctica.
+
+A banda, el programa crearà un fitxer anomenat typeme.dat amb informació que el permetrà saber on continuar la propera vegada que es faci servir.
+
+Per executar el programa, primer:
+
+1. col·loca els dos fitxers en el mateix directori
+
+2. dóna permisos d'execució a typeme.py.
+$ chmod +x typeme.py
+
+Ara ja pots executar el programa.
+
+$ ./typeme.py
+
+Directament t'apareixerà una frase d'entrenament. Comença a teclejar sense mirar el teclat (evidentment si mires, typeme.py no se n'adonarà però tu no estaràs aprofitant la pràctica ;) )
+
+En general, les tecles que prems t'apareixeran a sota de la frase d'entrenament, en color blau si coincideixen i vermell en cas d'error.
+
+Cada cop que finalitzis una frase se t'indicarà el percentatge de precisió i, si és el 100%, també la teva velocitat en nombre de pulsacions per minut a partir del moment en que vas prémer la primera tecla. A més a més, es considerarà que has superat la frase un cop!
+
+Si has finalitzat la frase amb una precisió per sota del 95%, el programa considerarà que la frase requereix més pràctica i incrementarà en un el nombre de cops que et caldrà superar-la. Si sents que això t'emprenya, recorda que el teu objectiu és millorar i que la millora s'aconsegueix practicant, practicant i practicant...
+
+Si prems <Esc> abandonaràs l'execució del programa immediatament. El proper cop que executis l'aplicació tornarà a demanar la primera frase no superada.
+Si prems <Enter> abandonaràs l'entrada i se't proposarà una nova frase d'entrenament (sovint la mateixa) per començar a teclejar.
+
+Si prems <Backspace> t'avisarà que aquesta tecla no està permesa i et deixarà continuar introduint per on anaves.
+
+Si t'acabes totes les frases d'entrenament, és d'esperar que typeme.py finalitzi gràcilment amb un missatge d'enhorabona. Dic que és d'esperar perquè no he aconseguit finalitzar-les totes en el moment en que estic escrivint aquesta guia ;)
+
+Si vols afegir-ne més frases, simplement pots editar el fitxer sequencies.txt. En cas que les afegeixis al final, typeme.py les considerarà automàticament. Altrament, potser hauràs d'editar el fitxer typeme.dat
+
+Editar el fitxer typeme.dat implica alguns riscos. El contingut està en format pickle (http://docs.python.org/library/pickle.html) En el fons no és més que un fitxer de text pla on trobaràs quelcom similar a:
+
+    (lp0
+    I2
+    aI2
+    aI2
+    aI2
+    aI2
+    aI2
+    aI2
+    aI2
+    aI2
+    aI2
+    aI2
+    aI2
+    aI2
+    aI2
+    ...
+El número que trobes al final de cada línia després d'una I indica el nombre de cops que s'haurà de passar la frase d'entrenament corresponent. Així, en aquest exemple, el primer I2 correspon a la primera frase i si el canvies per un altre número, estaràs canviant el nombre de cops que et demanarà typeme.py. Per exemple, si no vols tornar a fer la frase, pots posar amb tranquil·litat un 0. typeme.py no li ho dirà a ningú.
+
+Tot i que les fonts de les que he obtingut/composat les frases d'entrenament són moltes, hi trobaràs un bon grapat obtingudes de http://www.artypist.com/es Et recomano que li facis una ullada perquè s'ho val. Bàsicament typeme.py amplia el rang de tecles de les frases d'artypist mentre que simplifica (hom podria dir fa més lletja) la interacció.
+
+Si pertanys a artypist i consideres que he comés un abús en utilitzar les vostres seqüències, per favor, feu-m'ho saber i les retiraré d'aquí. He llegit els vostres "términos de uso" (http://www.artypist.com/es/mecanografia/terminos-de-uso) i penso que l'ús que faig d'aquestes seqüències no vulnera les condicions d'utilització que indiqueu.
