@@ -116,14 +116,23 @@ def composa_frase(paraules):
     random.shuffle(llista)
     return " ".join(llista)
 #
+def juga_frase(frase, pesos):
+    """ proposa la frase a l'usuari perquè la intenti teclejar.
+    Retorna True si l'usuari vol continuar jugant.
+    Modifica els pesos en funció de la realització de l'usuari """
+    return True
+#
 def proposa_joc(paraules, pesos):
     """ a partir d'un diccionari { pes: [paraules] } proposa
     el joc tot combinant les paraules maximitzant el pes """
     while True:
         frase = composa_frase(paraules)
-        if frase == "":
+        if frase == "":             # si no queden frases, finalitza
+            print "S'han completat totes les frases. Enhorabona!"
             break
-        print frase
+        if not juga_frase(frase):   # si no vol continuar, finalitza
+            print "Finalitzada la sessió"
+            break
 #
 def carrega_pesos():
     """ carrega la informació de pesos guardada a FITXER_PESOS 
