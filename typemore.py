@@ -26,6 +26,175 @@ import optparse
 DESCR_FUNCIONAMENT="Practica mecanografia."
 SENTENCE_MAX_LENGTH = 70    # max lenght of a sentence
 #
+class Dit:
+    """ encapsula la informació de quin dit cal per teclejar un caràcter """    # definició dels dits
+    # els dits queden numerats:
+    #   del 0 al 9 començant pel petit esquerre quan és un sol dit
+    #   del 10 al 19 quan cal prèmer la tecla de majúscules
+    #   del 20 al 29 quan cal prèmer la tecla Alt-Gr
+    #   del 30 al 39 quan cal prèmer un accent (ex. per 'è')
+    # per cada caràcter teclejable, s'indiquen els dits requerits
+    # Algunes numeracions poden no aparéixer mai donat que
+    # no hi ha cap caràcter "estàndard" associat. Ex. 33 (AltGr+f)
+    # En tot cas, si es requereix, hi cap. Ex. al meu teclat '«' s'obté 
+    # de AltGr+z i potser em pot ser interessant practicar-ho!
+    # TODO: aquesta és una part que s'ha de poder configurar a cada
+    # usuari. Hauria d'aparéixer a algun fitxer de configuració.
+    dits = {
+            "ª" : 10,
+            "º" : 0,
+            "\\": 20,
+            "\t": 0,
+            "!" : 10,
+            "1" : 0,
+            "|" : 20,
+            "q" : 0,
+            "Q" : 10,
+            "a" : 0,
+            "A" : 10,
+            "<" : 0,
+            ">" : 10,
+            "z" : 0,
+            "Z" : 10,
+            "2" : 1,
+            "\"": 11,
+            "@" : 21,
+            "w" : 1,
+            "W" : 11,
+            "s" : 1,
+            "S" : 11,
+            "x" : 1,
+            "X" : 11,
+            "3" : 2,
+            "·" : 12,
+            "#" : 22,
+            "e" : 2,
+            "E" : 12,
+            "€" : 22,
+            "d" : 2,
+            "D" : 12,
+            "c" : 2,
+            "C" : 12,
+            "4" : 3,
+            "$" : 13,
+            "~" : 23,
+            "r" : 3,
+            "R" : 13,
+            "f" : 3,
+            "F" : 13,
+            "v" : 3,
+            "V" : 13,
+            "5" : 3,
+            "%" : 13,
+            "t" : 3,
+            "T" : 13,
+            "g" : 3,
+            "G" : 13,
+            "b" : 3,
+            "B" : 13,
+            "6" : 6,
+            "&" : 16,
+            "y" : 6,
+            "Y" : 16,
+            "h" : 6,
+            "H" : 16,
+            "n" : 6,
+            "N" : 16,
+            "7" : 6,
+            "/" : 16,
+            "u" : 6,
+            "U" : 16,
+            "j" : 6,
+            "J" : 16,
+            "m" : 6,
+            "M" : 16,
+            "8" : 7,
+            "(" : 17,
+            "i" : 7,
+            "I" : 17,
+            "k" : 7,
+            "K" : 17,
+            "," : 7,
+            ";" : 17,
+            "9" : 8,
+            ")" : 18,
+            "o" : 8,
+            "O" : 18,
+            "l" : 8,
+            "L" : 18,
+            "." : 8,
+            ":" : 18,
+            "0" : 9,
+            "=" : 19,
+            "p" : 9,
+            "P" : 19,
+            "ñ" : 9,
+            "Ñ" : 19,
+            "-" : 9,
+            "_" : 19,
+            "'" : 9,
+            "?" : 19,
+            "[" : 29,
+            "{" : 29,
+            "¡" : 9,
+            "¿" : 19,
+            "+" : 9,
+            "*" : 19,
+            "]" : 29,
+            "ç" : 9,
+            "Ç" : 19,
+            "}" : 29,
+            "à" : 30,
+            "á" : 30,
+            "è" : 32,
+            "é" : 32,
+            "í" : 37,
+            "ò" : 38,
+            "ó" : 38,
+            "ú" : 36 
+    }
+
+    @staticmethod
+    def corresponent(caracter):
+        """ retorna el dit corresponent al caràcter.
+        Si no està registrat, retorna el dit -1."""
+        return Dit.dits.get(caracter, -1)
+#
+class Pes:
+    """ encapsula tota la informació requerida per a calcular els pesos """
+    def __init__(self):
+        pass
+    def default(self):
+        """ calcula els valors per defecte del pes """
+        # caracters amb un pes superior al de per defecte (0)
+        # inicialment no hi ha cap caràcter especial
+        self.caracters = dict() # {char: pes}
+
+        # parelles de caracters amb un pes superior al de 
+        # per defecte.
+        # inicialment no hi ha cap parella especial
+        self.parella_caracters= dict()  # { chars: pes }
+
+        # dits amb un pes especial al de per defecte
+        # inicialment no hi ha cap dit especial
+        self.dits = dict()
+
+        # parelles de dits amb un pes especial al de per defecte
+        # inicialment no hi ha cap parella de dits especial
+        self.parella_dits = dict()
+
+    def registra_error(self, paraula, pos):
+        """ registra l'error a la posició pos de la paraula """
+        pass
+
+    def registra_temps(self, paraula, pos, temps):
+        """ registra el temps requerit per a escriure el caràcter de
+        la posició pos dins de la paraula """
+        # TODO: cal definir el model de dades que suporti aquesta informació. També cal que el mètode que registra les entrades de l'usuari, vagi guardant informació de temps relatiu per cada caràcter de cada paraula!
+        pass
+        # TODO: caldrà definir funcions que permetin recalcular
+# pesos en funció del caràcter que s'ha fallat, la parella amb el caràcter previ, i el dit que corresponia al caràcter i els dits que corresponen a les parelles de caràcters.
+#
 def obte_arguments():
     """ retorna els arguments de la crida al programa en forma d'opcions de optparse """
     p = optparse.OptionParser(description = DESCR_FUNCIONAMENT, version="1.0")
@@ -120,6 +289,7 @@ def juga_frase(frase, pesos):
     """ proposa la frase a l'usuari perquè la intenti teclejar.
     Retorna True si l'usuari vol continuar jugant.
     Modifica els pesos en funció de la realització de l'usuari """
+    print frase
     return True
 #
 def proposa_joc(paraules, pesos):
@@ -130,14 +300,14 @@ def proposa_joc(paraules, pesos):
         if frase == "":             # si no queden frases, finalitza
             print "S'han completat totes les frases. Enhorabona!"
             break
-        if not juga_frase(frase):   # si no vol continuar, finalitza
+        if not juga_frase(frase, pesos):   # si no vol continuar, finalitza
             print "Finalitzada la sessió"
             break
 #
 def carrega_pesos():
     """ carrega la informació de pesos guardada a FITXER_PESOS 
     i la retorna """
-    pass
+    return Pes()
 #
 def guarda_pesos(pesos):
     """ guarda els pesos calculats en aquesta sessió """
