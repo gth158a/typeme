@@ -20,10 +20,11 @@
 
 #
 import os, sys
+import random
 import optparse
 #
 DESCR_FUNCIONAMENT="Practica mecanografia."
-SENTENCE_MAX_LENGTH = 20    # max lenght of a sentence
+SENTENCE_MAX_LENGTH = 70    # max lenght of a sentence
 #
 def obte_arguments():
     """ retorna els arguments de la crida al programa en forma d'opcions de optparse """
@@ -84,9 +85,7 @@ def selecciona_paraula(paraules, longitud_max):
     claus.sort()
     claus.reverse()
     for c in claus:
-        if len(paraules[c])==0:     # en principi no cal
-            del(paraules[c])
-            continue
+        random.shuffle(paraules[c])
         for v in paraules[c]:
             if len(v) <= longitud_max:
                 p = v
@@ -103,18 +102,18 @@ def composa_frase(paraules):
     paraules ({pes:[paraules]} de llargaria no superior però pròxima
     a SENTENCE_MAX_LENGTH """
     llista = list() # llista de paraules seleccionades
-    longitud_disponible = SENTENCE_MAX_LENGTH
+    longitud_disponible = SENTENCE_MAX_LENGTH + 1 # +1 for simplify blanks
     paraules_disponibles = len(paraules.values()) # optimització
-    continua = paraules_disponibles > 0
-    while continua:
+    continua = len(paraules.keys()) > 0
+    while paraules_disponibles > 0 and longitud_disponible > 0:
         p = selecciona_paraula(paraules, longitud_disponible)
         if p == "":
+            break
             continua = False
         else:
-            paraules_disponibles -= 1   # elimina una paraula
             longitud_disponible -= 1 + len(p)
-            continua = paraules_disponibles > 0 and longitud_disponible > 0
             llista.append(p)
+    random.shuffle(llista)
     return " ".join(llista)
 #
 def proposa_joc(paraules, pesos):
