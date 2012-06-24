@@ -185,6 +185,9 @@ class Pes:
 
     def registra_error(self, paraula, pos):
         """ registra l'error a la posició pos de la paraula """
+# TODO: cal fer ús de la posició per guardar, a més del caràcter amb error
+# la parella que forma amb l'anterior.
+# També seria interesant trobar la manera com gestionar el backspace
         pass
 
     def registra_temps(self, paraula, pos, temps):
@@ -283,13 +286,17 @@ def composa_frase(paraules):
             longitud_disponible -= 1 + len(p)
             llista.append(p)
     random.shuffle(llista)
-    return " ".join(llista)
+    return llista
 #
 def juga_frase(frase, pesos):
-    """ proposa la frase a l'usuari perquè la intenti teclejar.
+    """ proposa la frase (llista de paraules) a l'usuari perquè 
+    la intenti teclejar.
     Retorna True si l'usuari vol continuar jugant.
     Modifica els pesos en funció de la realització de l'usuari """
-    print frase
+    print " ".join(frase)
+    # cw = 0
+    # while cw < len(frase):
+    #     current_word = frase[0]
     return True
 #
 def proposa_joc(paraules, pesos):
@@ -297,7 +304,7 @@ def proposa_joc(paraules, pesos):
     el joc tot combinant les paraules maximitzant el pes """
     while True:
         frase = composa_frase(paraules)
-        if frase == "":             # si no queden frases, finalitza
+        if frase == []:             # si no queden frases, finalitza
             print "S'han completat totes les frases. Enhorabona!"
             break
         if not juga_frase(frase, pesos):   # si no vol continuar, finalitza
